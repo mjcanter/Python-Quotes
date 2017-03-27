@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title></title>
+</head>
+<body>
+
+	<h3>Register New User Here:</h3>
+	<form action='/register' method='post'>
+		{% csrf_token %}
+		<label>Name</label>
+		<input type='text' name='name'>
+		<label>Alias</label>
+		<input type='text' name='alias'>
+		<label>Email</label>
+		<input type='text' name='email'>
+		<label>Date of Birth</label>
+		<input type='Date' name='dob'>
+		<label>Password</label>
+		<input type='text' name='password'>
+		<label>Confirm Password</label>
+		<input type='text' name='confirm'>
+		<input type='submit' value='Submit'>
+	</form>
+	{% if messages %}
+    	{% for message in messages %}
+    		<p> {{ message }}</p>
+    	{% endfor %}
+    {% endif %}
+	<h3>Login</h3>
+        <form action="/login" method="post">
+        	{% csrf_token %}
+            <p>Email: <input type="text" name='email'></p>
+            <p>Password: <input type="password" name='lgpassword'></p>
+            <p><input type="submit" value="Login"></p>
+        </form>
+	{% for Users in Users %}
+		<p>Name:{{Users.name}} Alias:{{Users.alias}} Email:{{Users.email}}</p>
+		<form action='/deleteuser' method='post'>
+			{% csrf_token %}
+			<input type="hidden" name="delete_this" value={{Users.id}}>
+            <input type="submit" value='Delete'>
+		</form>
+	{% endfor %}
+</body>
+</html>
+
+
+                    

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<script></script>
+<body>
+    {% for x in curr_user %}
+    <header>
+        <div id="header_container">
+                <h2>Hello, {{ x.name }}</h2>
+                <a href="/logout"><button>Log Off</button></a>
+                <a href="/user"><button>User Page</button></a>
+            </div><!-- /#header_right  -->
+        </div><!-- /#header_container  -->
+    </header>
+    <div id="wrapper">
+        <div>
+            <h3>Contribute a Post</h3>
+            <form action="/quote" method="POST">
+            {% csrf_token %}
+                <label>Quoted By:</label>
+                <input type='text' name='quote_by'>
+                <label>Message</label>
+                <textarea type='text' name='new_quote'></textarea>
+                <input type="submit" value="Post">
+            </form>
+            {% if messages %}
+                {% for message in messages %}
+                    <p> {{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        </div><!--  /.post_quote -->
+        <div>
+            <p>Quotable Qutoes</p>
+            {% for quote in Quotes %}
+                <div>
+                    <li>{{quote.quote_by}}:{{quote.quote_text}} Posted by: {{quote.user_id.name}}</li>
+                        <form action="/seluser" method="POST">
+                        {% csrf_token %}
+                            <input type="hidden" name="seluser" value={{quote.user_id.id}}>
+                            <input type="submit" value="See User's Posts">
+                        </form>
+                        <form action="/fav" method="POST">
+                        {% csrf_token %}
+                            <input type="hidden" name="fav_this" value={{quote.id}}>
+                            <input type="submit" value="fav">
+                        </form>
+                </div>
+            {% endfor %}
+            {% if Quotes == None %}
+                <p class="nothing">There's nothing here yet...</p>
+            {% endif %}
+        </div>
+        <div>
+            <p>Your Favorites</p>
+            {% for quote in yourfavs %}
+                <div>
+                    <li>{{quote.quote_by}}:{{quote.quote_text}} Posted by: {{quote.user_id.name}}</li>
+                        <form action="/seluser" method="POST">
+                        {% csrf_token %}
+                            <input type="hidden" name="seluser" value={{quote.user_id.id}}>
+                            <input type="submit" value="See User's Posts">
+                        </form>
+                        <form action="/removefav" method="POST">
+                        {% csrf_token %}
+                            <input type="hidden" name="remove_this" value={{quote.id}}>
+                            <input type="submit" value="remove">
+                        </form>             
+                </div>
+            {% endfor %}
+            {% if Quotes == None %}
+                <p class="nothing">There's nothing here yet...</p>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</body>
+</html>

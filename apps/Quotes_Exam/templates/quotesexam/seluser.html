@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<title>Select User</title>
+<body>
+	{% for x in curr_user %}
+    <header>
+        <div id="header_container">
+                <h2>Hello, {{ x.name }}{{ x.id }}</h2>
+                <a href="/logout"><button>Log Off</button></a>
+                <a href="/home"><button>Home Page</button></a>
+            </div><!-- /#header_right  -->
+        </div><!-- /#header_container  -->
+    </header>
+    <div id="wrapper">
+        {% for quote in sel_user %}
+                <div>
+                <li>{{quote.quote_by}}:   {{quote.quote_text}} Postsed by:{{quote.user_id.name}}</a></li>
+                        <form action="/fav" method="POST">
+                        {% csrf_token %}
+                            <input type="hidden" name="fav_this" value={{quote.id}}>
+                            <input type="submit" value="fav">
+                        </form>
+                </div>
+        {% endfor %}
+    {% endfor %}
+</body>
+</html>
